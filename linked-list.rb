@@ -35,7 +35,7 @@ class LinkedList
   end
 
   def head
-    @head
+    @head.value
   end
 
   def tail(node = @head)
@@ -43,17 +43,18 @@ class LinkedList
     
     node = node.next_node until node.next_node.nil?
 
-    node
+    node.value
   end
 
-  def at(index)
+  def at(index,value=true)
     node = @head
-
-    index -= 1
 
     index.times do
       node = node.next_node
     end
+
+    return node.value if value
+
     node
   end
 
@@ -80,10 +81,52 @@ class LinkedList
 
     false
   end
+
+  def find(value)
+    return nil if @head.nil?
+
+    index = 0
+    node = @head
+
+    until node.next_node.nil?
+      return index if node.value = value
+
+      index += 1
+    end
+
+    return nil
+  end
+
+  def to_s
+    return "nil" if @head.nil?
+    
+    string = ""
+    node = @head
+
+    loop do
+      string += "( #{node.value} ) -> "
+      break if node.next_node.nil?
+      node = node.next_node
+    end
+    string += "nil"
+  end
+
+  def insert_at(value, index)
+    return append(value) if size - 1 < index
+
+    node = at(index-1,false)
+
+    next_node = node.next_node
+    new_node = Node.new(value)
+    new_node.next_node = next_node
+    node.next_node = new_node
+  end
+  
 end
 
 class Node
   attr_accessor :value, :next_node
+
   def initialize(value = nil, next_node = nil)
     @value = value
     @next_node = next_node
@@ -95,5 +138,5 @@ b.append(1)
 b.append(2)
 b.append(3)
 b.append(4)
-p b
-puts b.contains(5)
+b.insert_at(7,10)
+puts b.to_s
