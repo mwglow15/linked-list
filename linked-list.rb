@@ -41,7 +41,6 @@ class LinkedList
   def tail(node = @head)
     return "head is empty" if @head.nil?
     
-    node = @head
     node = node.next_node until node.next_node.nil?
 
     node
@@ -74,9 +73,12 @@ class LinkedList
 
     node = @head
 
-    until node.nil?
-      return true if 
+    until node.next_node.nil?
+      return true if node.value == value
+      node = node.next_node
     end
+
+    false
   end
 end
 
@@ -94,5 +96,4 @@ b.append(2)
 b.append(3)
 b.append(4)
 p b
-b.pop
-p b
+puts b.contains(5)
